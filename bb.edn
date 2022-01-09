@@ -61,4 +61,5 @@
                                              :at (str "AT" (str/replace version "." ""))}))
                        #_#_#_(shell "git add Formula")
                        (shell "git commit -m " tag)
-                       (shell "git push"))}}
+                       (shell "git push"))
+         test-obb (shell "brew install --build-from-source Formula/obb.rb")}}
