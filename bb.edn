@@ -24,6 +24,7 @@
                            _ (io/copy stream file)
                            hex (->hex file)
                            version (subs tag 1)]
+                       (prn :tag tag)
                        (spit "Formula/neil.rb"
                              (parser/render (slurp "templates/neil.template.rb")
                                             {:version version
