@@ -13,7 +13,8 @@
                          hex (str zeroes hex)]
                      hex)))
          update-neil (let [tag
-                           (-> (curl/get "https://api.github.com/repos/babashka/neil/tags")
+                           (-> (curl/get "https://api.github.com/repos/babashka/neil/tags"
+                                         {:basic-auth [nil (System/getenv "GITHUB_TOKEN")]})
                                :body
                                (json/parse-string true)
                                first
