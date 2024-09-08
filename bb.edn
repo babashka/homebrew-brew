@@ -37,7 +37,35 @@
                                              :at (str "AT" (str/replace version "." ""))}))
                        (fs/delete "neil.tmp")
                        (shell "git add Formula")
-                       (shell "git commit -m " tag)
+                       (Shell "git commit -m " tag)
+                       (shell "git push"))
+
+         update-bbin (let [tag
+                           (-> (curl/get "https://api.github.com/repos/babashka/bbin/tags"
+                                         {:basic-auth [nil (System/getenv "GITHUB_TOKEN")]})
+                               :body
+                               (json/parse-string true)
+                               first
+                               :name)
+                           stream (:body (curl/get (format "https://github.com/babashka/bbin/archive/%s.zip" tag) {:as :stream}))
+                           file (doto (fs/file "bbin.tmp")
+                                  fs/delete-on-exit)
+                           _ (io/copy stream file)
+                           hex (->hex file)
+                           version (subs tag 1)]
+                       (prn :tag tag)
+                       (spit "Formula/bbin.rb"
+                             (parser/render (slurp "templates/bbin.template.rb")
+                                            {:version version
+                                             :sha hex}))
+                       (spit (format "Formula/bbin@%s.rb" version)
+                             (parser/render (slurp "templates/bbin.template.rb")
+                                            {:version version
+                                             :sha hex
+                                             :at (str "AT" (str/replace version "." ""))}))
+                       (fs/delete "bbin.tmp")
+                       #_#_#_(shell "git add Formula")
+                       (Shell "git commit -m " tag)
                        (shell "git push"))
 
          ;; TODO: refactor common code

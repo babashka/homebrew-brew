@@ -1,4 +1,4 @@
-class Bbin < Formula
+class BbinAT024 < Formula
   desc ""
   homepage ""
   license ""
