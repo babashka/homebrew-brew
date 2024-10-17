@@ -37,7 +37,7 @@
                                              :at (str "AT" (str/replace version "." ""))}))
                        (fs/delete "neil.tmp")
                        (shell "git add Formula")
-                       (Shell "git commit -m " tag)
+                       (shell "git commit -m " tag)
                        (shell "git push"))
 
          update-bbin (let [tag
